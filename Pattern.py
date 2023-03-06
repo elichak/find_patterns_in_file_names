@@ -2,14 +2,9 @@ import re
 import os
 import numpy as np
 from os.path import isfile, join
-dir_name = input("Введите имя корневой папки\n") # "D:\Учеба\Programming\Prac_4_sem\root_pattern"
+dir_name = input("Введите имя корневой папки\n") # 'D:\Учеба\Programming\Prac_4_sem\root_pattern'
 os.chdir(dir_name)
 departments = ['analytics', 'R&D', 'marketing', 'accounting', 'engineering'] # названия отделов
-for dirname in departments:
-    try:
-        os.mkdir(dirname) # создание папки для каждого отдела
-    except FileExistsError:
-        continue
 try:
     os.mkdir('Прочее')
 except FileExistsError:
@@ -46,7 +41,12 @@ while True:
             if len(re_f) == 0:# если findall вернула пустой список, то паттерн не найден, следовательно в прочее
                 os.replace(file_name, "Прочее" + "/" + file_name) # перемещение
             else:
-                os.replace(file_name, re_f[0] + "/" + file_name) # перемещение
+                try:
+                    os.mkdir(re_f[0])  # создание папки для каждого отдела
+                    os.replace(file_name, re_f[0] + "/" + file_name)  # перемещение
+                except FileExistsError:
+                    os.replace(file_name, re_f[0] + "/" + file_name)  # перемещение
+
     else:
         print('Ok!')
         break
